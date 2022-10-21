@@ -1,9 +1,8 @@
 import { useState } from "react"
 
-const CurrentFlashcard = ({flashcard}) => {
+const CurrentFlashcard = ({ flashcard }) => {
   return (
     <div>
-      <p>{flashcard.english}</p>
       <p>{flashcard.arabic}</p>
     </div>
   )
@@ -11,6 +10,7 @@ const CurrentFlashcard = ({flashcard}) => {
 
 const App = () => {
   const [currentCardIndex, setCurrentCardIndex] = useState(0)
+  const [showEnglish, setShowEnglish] = useState(false)
   const flashcards = [
     {
       english: "He did",
@@ -19,13 +19,32 @@ const App = () => {
     {
       english: "He was",
       arabic: "كَانَ"
+    },
+    {
+      english: "This is",
+      arabic: "هٰذَا"
     }
   ]
 
+  const randomFlashcard = () => {
+    setCurrentCardIndex(Math.floor(Math.random() * flashcards.length))
+    setShowEnglish(false)
+  }
+
+  const toggleTranslation = () => {
+    setShowEnglish(!showEnglish)
+  }
+
   return (
     <div>
-      <CurrentFlashcard  flashcard={flashcards[currentCardIndex]}/>
-      <button onClick={() => setCurrentCardIndex(Math.floor(Math.random()*flashcards.length))}>Random Card</button>
+      <div>
+        <CurrentFlashcard flashcard={flashcards[currentCardIndex]} />
+        {showEnglish ? (flashcards[currentCardIndex].english) : ("")}
+      </div>
+      <div>
+        <button onClick={toggleTranslation}>Translate</button>
+        <button onClick={randomFlashcard}>Random Card</button>
+      </div>
     </div>
   )
 }
